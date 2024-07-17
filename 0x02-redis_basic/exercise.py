@@ -37,20 +37,22 @@ class Cache:
         self._redis.set(key, data)
         return (key)
 
-    def get(self, key: str, fn: Optional[Callable[[bytes], Union[str, int, float]]]= None) -> Union[str, int, float, None]:
-        """ get data from redis"""
+    def get(self,
+            key: str,
+            fn: Optional[Callable[[bytes], Union[str, int, float]]] = None
+            ) -> Union[str, int, float, None]:
+        """Get data from redis"""
         data = self._redis.get(key)
         if data is None:
             return None
         if fn:
             return fn(data)
         return data
-    
+
     def get_str(self, key: str) -> Union[str, None]:
         """ gets string data from redis"""
         return self.get(key, lambda d: d.decode('utf-8'))
-    
+
     def get_int(self, key: str) -> Union[int, None]:
         """ gets int dat from redis """
         return self.get(key, int)
-    
